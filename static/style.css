@@ -1,0 +1,83 @@
+body {
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+    background: linear-gradient(135deg, #00c6ff, #0072ff);
+    color: white;
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    color: white;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.cell {
+    width: 100px;
+    height: 100px;
+    font-size: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.9);
+    transition: all 0.3s ease;
+    font-weight: bold;
+}
+
+.cell:hover {
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+.x-symbol {
+    color: #ff4b5c;
+}
+
+.o-symbol {
+    color: #28a745;
+}
+
+#player-name {
+    padding: 10px;
+    font-size: 1rem;
+    margin-top: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+#join-game {
+    padding: 10px 15px;
+    font-size: 1rem;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+}
+
+#join-game:hover {
+    background-color: #0056b3;
+}
+
+#game-status {
+    margin-top: 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}

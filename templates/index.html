@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego de Gato</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Juego de Gato</h1>
+    
+    
+    <input type="text" id="player-name" placeholder="Ingresa tu nombre">
+    <button id="join-game">Unirse al juego</button>
+    <p>Tu símbolo es: <span id="player-symbol"></span></p>
+    <div class="board">
+        <div class="cell" data-pos="0"></div>
+        <div class="cell" data-pos="1"></div>
+        <div class="cell" data-pos="2"></div>
+        <div class="cell" data-pos="3"></div>
+        <div class="cell" data-pos="4"></div>
+        <div class="cell" data-pos="5"></div>
+        <div class="cell" data-pos="6"></div>
+        <div class="cell" data-pos="7"></div>
+        <div class="cell" data-pos="8"></div>
+    </div>
+
+    <p id="game-status"></p>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.4/socket.io.js"></script>
+    <script>
+        const room = "{{ room }}";
+        const socket = io.connect("http://" + document.domain + ":" + location.port);
+        let playerSymbol = "";
+        let playerName = "";
+
+        document.getElementById("join-game").addEventListener("click", function() {
+            playerName = document.getElementById("player-name").value.trim();
+            if (playerName) {
+                playerSymbol = Math.random() > 0.5 ? "X" : "O";
+                document.getElementById("player-symbol").textContent = playerSymbol;
+                socket.emit("join", { room: room, name: playerName });
+            } else {
+                alert("Por favor, ingresa tu nombre");
+            }
+        });
+
+        document.querySelectorAll(".cell").forEach(cell => {
+            cell.addEventListener("click", function() {
+                if (this.innerText === "" && playerSymbol) {
+                    socket.emit("move", {
+                        room: room,
+                        position: this.getAttribute("data-pos"),
+                        player: playerSymbol
+                    });
+                }
+            });
+        });
+
+        socket.on("update_board", function(data) {
+            document.querySelectorAll(".cell").forEach((cell, index) => {
+                cell.innerText = data.board[index];
+                cell.className = "cell " + (data.board[index] === "X" ? "x-symbol" : data.board[index] === "O" ? "o-symbol" : "");
+            });
+        });
+
+        socket.on("game_over", function(data) {
+            document.getElementById("game-status").textContent = alert(`¡${data.winner} ha ganado el juego!`);
+        });
+    </script>
+</body>
+</html>
